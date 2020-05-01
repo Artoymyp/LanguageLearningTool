@@ -72,7 +72,10 @@
                         Command="{Binding OpenWebCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />
-            </StackLayout>
+				<Button Text="Play test |>"
+					    Command ="{Binding PlayTestCommand}"
+				/>
+			</StackLayout>
         </ScrollView>
     </Grid>
 </ContentPage>
