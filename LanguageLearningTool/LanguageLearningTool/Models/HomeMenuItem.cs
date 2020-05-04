@@ -7,7 +7,8 @@ namespace LanguageLearningTool.Models
 	public enum MenuItemType
 	{
 		Browse,
-		About
+		About,
+		Quiz,
 	}
 	public class HomeMenuItem
 	{

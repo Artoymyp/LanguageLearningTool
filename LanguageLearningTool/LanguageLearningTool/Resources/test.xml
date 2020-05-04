@@ -1,0 +1,85 @@
+<root>
+	<theme name="たび">
+		<group name="V" grammar="V+たび[に]">
+			<test question="メアリーは⽇本に⾏く[...]、⽇本語が上⼿になる。">
+				<a text="たび[に]" is_correct="true"/>
+				<a text="以来"/>
+				<a text="とたん"/>
+			</test>
+			<test question="メアリーは⽇本に[...]たび、⽇本語が上⼿になる。">
+				<a text="⾏く" is_correct="true"/>
+				<a text="行った"/>
+				<a text="行って"/>
+				<a text="行っている"/>
+				<a text="行っていた"/>
+			</test>
+		</group>
+		<group name="N" grammar="N+の+たび[に]">
+			<test question="引越し[...]荷物が増える。">
+				<a text="のたび[に]" is_correct="true"/>
+				<a text="たび"/>
+				<a text="でたび"/>
+			</test>
+		</group>
+		<group name="、" grammar="たび[に][、]">
+			<test question="引越しのたびに[...]荷物が増える。">
+				<a text=""/>
+				<a text="、"/>
+				<a text="[、]" is_correct="true"/>
+			</test>
+		</group>
+	</theme>
+	<theme name="とたん">
+		<group name="V" grammar="Vた+とたん">
+			<test question="メアリーは⽇本に⾏った[...]、インフルエンザになった。">
+				<a text="たび"/>
+				<a text="以来"/>
+				<a text="とたん[に]" is_correct="true"/>
+			</test>
+			<test question="メアリーは⽇本に[...]とたん、インフルエンザになった。">
+				<a text="⾏く"/>
+				<a text="行った" is_correct="true"/>
+				<a text="行って"/>
+				<a text="行っている"/>
+				<a text="行っていた"/>
+			</test>
+		</group>
+		<group name="、" grammar="とたん[に][、]">
+			<test question="メアリーは⽇本に⾏ったとたん[...]インフルエンザになった。">
+				<a text=""/>
+				<a text="、"/>
+				<a text="[、]" is_correct="true"/>
+			</test>
+		</group>
+	</theme>
+	<theme name="以来">
+		<group name="V" grammar="Vて+以来">
+			<test question="メアリーは⽇本に⾏って[...]、⽇本が好きになった。">
+				<a text="たび"/>
+				<a text="以来" is_correct="true"/>
+				<a text="とたん"/>
+			</test>
+			<test question="メアリーは⽇本に[...]以来、⽇本が好きになった。">
+				<a text="⾏く"/>
+				<a text="行った"/>
+				<a text="行って" is_correct="true"/>
+				<a text="行っている"/>
+				<a text="行っていた"/>
+			</test>
+		</group>
+		<group name="N" grammar="N+以来">
+			<test question="あの店は開店[...]、お客さんが絶えません。">
+				<a text="の以来"/>
+				<a text="以来" is_correct="true"/>
+				<a text="から以来"/>
+			</test>			
+		</group>
+		<group name="、" grammar="以来、">
+			<test question="あの店は開店以来[...]お客さんが絶えません。">
+				<a text=""/>
+				<a text="、" is_correct="true"/>
+				<a text="[、]"/>
+			</test>			
+		</group>
+	</theme>
+</root>

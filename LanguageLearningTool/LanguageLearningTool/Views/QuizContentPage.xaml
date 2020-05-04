@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:LanguageLearningTool.ViewModels;assembly=LanguageLearningTool"
+             x:Class="LanguageLearningTool.Views.QuizContentPage" x:DataType="viewModels:QuizViewModel">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Grammar quiz"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text ="{Binding CurrentQuestion.Text}"/>
+            <ListView
+                ItemsSource="{Binding CurrentQuestion.Answers}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:Answer">
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label 
+                                    VerticalTextAlignment="Center" 
+                                    Text="{Binding Text}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Grid
+                HeightRequest="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions> 
+                <Button Grid.Column="0" Text="Previous question" Command="{Binding PrevQuestionCommand}"/>
+                <Label 
+                    Grid.Column="1" 
+                    VerticalTextAlignment="Center"
+                    Text="{Binding Progress}"
+                    HorizontalOptions="Center"
+                    />
+                <Button Grid.Column="2" Text="Next question" Command="{Binding NextQuestionCommand}"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

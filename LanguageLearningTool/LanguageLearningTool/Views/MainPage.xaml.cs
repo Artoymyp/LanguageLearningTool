@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LanguageLearningTool.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -30,6 +31,11 @@ namespace LanguageLearningTool.Views
 					case (int)MenuItemType.About:
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));
 						break;
+					case (int)MenuItemType.Quiz:
+                    {
+                        MenuPages.Add(id, new NavigationPage(new QuizContentPage()));
+                        break;
+                    }
 				}
 			}
 
