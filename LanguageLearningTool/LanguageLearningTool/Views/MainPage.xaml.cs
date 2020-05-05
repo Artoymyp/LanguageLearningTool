@@ -11,15 +11,17 @@ namespace LanguageLearningTool.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MainPage : MasterDetailPage
 	{
-		Dictionary<MenuItemType, NavigationPage> MenuPages = new Dictionary<MenuItemType, NavigationPage>();
-
+		Dictionary<MenuItemType, ContentPage> MenuPages = new Dictionary<MenuItemType, ContentPage>();
+        NavigationPage RootNavigation;
 		public MainPage()
 		{
 			InitializeComponent();
 
 			MasterBehavior = MasterBehavior.Popover;
 
-			MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
+            RootNavigation = (NavigationPage)Detail;
+
+            MenuPages.Add((int)MenuItemType.Browse, (ContentPage)RootNavigation.CurrentPage);
 		}
 
 		public async Task NavigateFromMenu(MenuItemType id)
@@ -27,14 +29,14 @@ namespace LanguageLearningTool.Views
 			if (!MenuPages.ContainsKey(id)) {
 				switch (id) {
 					case MenuItemType.Browse:
-						MenuPages.Add(id, new NavigationPage(new ItemsPage()));
+						MenuPages.Add(id, new ItemsPage());
 						break;
 					case MenuItemType.About:
-						MenuPages.Add(id, new NavigationPage(new AboutPage()));
+						MenuPages.Add(id, new AboutPage());
 						break;
 					case MenuItemType.Quiz:
                     {
-                        MenuPages.Add(id, new NavigationPage(new QuizContentPage()));
+                        MenuPages.Add(id, new QuizContentPage());
                         break;
                     }
 				}
@@ -42,14 +44,29 @@ namespace LanguageLearningTool.Views
 
 			var newPage = MenuPages[id];
 
-			if (newPage != null && Detail != newPage) {
-				Detail = newPage;
+            if (RootNavigation.RootPage == newPage) {
+                await RootNavigation.PopToRootAsync();
+
+                if (Device.RuntimePlatform == Device.Android)
+                    await Task.Delay(100);
+
+                IsPresented = false;
+            }
+			else if (newPage != null && RootNavigation.CurrentPage != newPage) {
+				//Detail = newPage;
+                await RootNavigation.PushAsync(newPage);
 
 				if (Device.RuntimePlatform == Device.Android)
 					await Task.Delay(100);
 
 				IsPresented = false;
 			}
-		}
+            else if (RootNavigation.CurrentPage == newPage) {
+                IsPresented = false;
+
+                if (Device.RuntimePlatform == Device.Android)
+                    await Task.Delay(100);
+            }
+        }
 	}
 }
