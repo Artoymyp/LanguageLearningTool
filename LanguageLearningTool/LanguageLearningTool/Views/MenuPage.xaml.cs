@@ -31,7 +31,7 @@ namespace LanguageLearningTool.Views
 				if (e.SelectedItem == null)
 					return;
 
-				var id = (int)((HomeMenuItem)e.SelectedItem).Id;
+                MenuItemType id = ((HomeMenuItem)e.SelectedItem).Id;
 				await RootPage.NavigateFromMenu(id);
 			};
 		}

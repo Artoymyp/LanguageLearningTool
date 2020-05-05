@@ -11,7 +11,8 @@ namespace LanguageLearningTool.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MainPage : MasterDetailPage
 	{
-		Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+		Dictionary<MenuItemType, NavigationPage> MenuPages = new Dictionary<MenuItemType, NavigationPage>();
+
 		public MainPage()
 		{
 			InitializeComponent();
@@ -21,17 +22,17 @@ namespace LanguageLearningTool.Views
 			MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
 		}
 
-		public async Task NavigateFromMenu(int id)
+		public async Task NavigateFromMenu(MenuItemType id)
 		{
 			if (!MenuPages.ContainsKey(id)) {
 				switch (id) {
-					case (int)MenuItemType.Browse:
+					case MenuItemType.Browse:
 						MenuPages.Add(id, new NavigationPage(new ItemsPage()));
 						break;
-					case (int)MenuItemType.About:
+					case MenuItemType.About:
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));
 						break;
-					case (int)MenuItemType.Quiz:
+					case MenuItemType.Quiz:
                     {
                         MenuPages.Add(id, new NavigationPage(new QuizContentPage()));
                         break;
