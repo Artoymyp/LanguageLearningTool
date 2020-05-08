@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using LanguageLearningTool.ViewModels;
 
 namespace LanguageLearningTool.Models
 {
@@ -12,7 +13,7 @@ namespace LanguageLearningTool.Models
 	}
 	public class HomeMenuItem
 	{
-		public MenuItemType Id { get; set; }
+		public BaseViewModel ViewModel { get; set; }
 
 		public string Title { get; set; }
 	}

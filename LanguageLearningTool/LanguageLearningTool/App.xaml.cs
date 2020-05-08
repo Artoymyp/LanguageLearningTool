@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using LanguageLearningTool.Services;
+using LanguageLearningTool.ViewModels;
 using LanguageLearningTool.Views;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -12,18 +13,29 @@ namespace LanguageLearningTool
 		//TODO: Replace with *.azurewebsites.net url after deploying backend to Azure
 		public static string AzureBackendUrl = "http://localhost:5000";
 		public static bool UseMockDataStore = true;
+        readonly INavigationService _navigationService;
 
-		public App()
+        static App()
+        {
+        }
+
+        public App()
 		{
 			InitializeComponent();
+
+            var navigationService = new NavigationServiceImplementation(new ReflectingViewLocator());
+            _navigationService = navigationService;
+            var rootVm = new MainViewModel(_navigationService);
+            var rootPage = new MainPage(rootVm);
+            navigationService.SetRoot(rootPage);
+            _navigationService.PresentAsNavigatableMainPage(rootVm.Detail);
+            MainPage = rootPage;
 
 			if (UseMockDataStore)
 				DependencyService.Register<MockDataStore>();
 			else
 				DependencyService.Register<AzureDataStore>();
-
-			MainPage = new MainPage();
-		}
+        }
 
 		protected override void OnStart()
 		{
