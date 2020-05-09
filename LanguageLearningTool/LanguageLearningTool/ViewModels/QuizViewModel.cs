@@ -31,8 +31,11 @@ namespace LanguageLearningTool.ViewModels
         public int SelectedAnswerIndex { get; set; }
         public int CorrectAnswerIndex { get; private set; }
     }
-
-    public class QuizViewModel : ViewModelBase
+    public class QuizViewModel1 : QuizViewModel
+    {
+        QuizViewModel1():base(null, null) { }
+    }
+    public class QuizViewModel : NavigatableViewModelBase<Views.QuizContentPage>
     {
         readonly INavigationService _navigationService;
         Question _currentQuestion;

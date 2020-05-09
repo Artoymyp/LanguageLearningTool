@@ -20,7 +20,7 @@ namespace LanguageLearningTool.ViewModels
             _ownerVm = ownerVm;
             _menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {ViewModel = new ItemsViewModel(), Title = "Browse"},
+                new HomeMenuItem {ViewModel = new ItemsViewModel(navigationService), Title = "Browse"},
                 new HomeMenuItem {ViewModel = new AboutViewModel(), Title = "About"},
                 new HomeMenuItem
                 {

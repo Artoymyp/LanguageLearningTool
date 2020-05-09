@@ -12,15 +12,9 @@ namespace LanguageLearningTool.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class QuizContentPage : ContentPage
 	{
-		public QuizContentPage() : this(null)
+		public QuizContentPage()
         {
-            
+            InitializeComponent ();
         }
-
-        public QuizContentPage (QuizViewModel viewModel)
-		{
-			InitializeComponent ();
-			BindingContext = viewModel;
-		}
     }
 }

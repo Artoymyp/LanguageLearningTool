@@ -16,27 +16,22 @@ namespace LanguageLearningTool.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ItemsPage : ContentPage
 	{
-		ItemsViewModel viewModel => (ItemsViewModel)BindingContext;
+        ItemsViewModel viewModel => (ItemsViewModel)BindingContext;
 
 		public ItemsPage()
-		{
-			InitializeComponent();
-		}
-
-        public ItemsPage(ItemsViewModel vm)
         {
             InitializeComponent();
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
 		{
 			var item = args.SelectedItem as Item;
 			if (item == null)
 				return;
 
-			await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+            viewModel.ItemSelectedCommand.Execute(args.SelectedItem);
 
-			// Manually deselect item.
+            // Manually deselect item.
 			ItemsListView.SelectedItem = null;
 		}
 

@@ -2,13 +2,12 @@
 using System.IO;
 using System.Reflection;
 using System.Windows.Input;
-
 using Xamarin.Forms;
 
 namespace LanguageLearningTool.ViewModels
 {
-	public class AboutViewModel : ViewModelBase
-	{
+	public class AboutViewModel : NavigatableViewModelBase<Views.AboutPage>
+    {
 		public AboutViewModel()
 		{
 			Title = "About";

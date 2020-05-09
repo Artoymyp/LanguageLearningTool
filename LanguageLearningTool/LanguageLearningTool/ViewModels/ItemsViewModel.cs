@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 
 using LanguageLearningTool.Models;
@@ -10,14 +10,29 @@ using LanguageLearningTool.Views;
 
 namespace LanguageLearningTool.ViewModels
 {
-	public class ItemsViewModel : ViewModelBase
-	{
-		public ObservableCollection<Item> Items { get; set; }
+	public class ItemsViewModel : NavigatableViewModelBase<Views.ItemsPage>
+    {
+        readonly INavigationService _navigationService;
+
+        public ObservableCollection<Item> Items { get; set; }
 		public Command LoadItemsCommand { get; set; }
 
-		public ItemsViewModel()
+        public ICommand ItemSelectedCommand
+        {
+            get
+            {
+                return new Command<Item>(async item=>
+                {
+                    var itemViewModel = new ItemDetailViewModel(item);
+                    await _navigationService.NavigateTo(itemViewModel);
+                });
+            }
+        }
+
+        public ItemsViewModel(INavigationService navigationService)
 		{
-			Title = "Browse";
+            _navigationService = navigationService;
+            Title = "Browse";
 			Items = new ObservableCollection<Item>();
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 

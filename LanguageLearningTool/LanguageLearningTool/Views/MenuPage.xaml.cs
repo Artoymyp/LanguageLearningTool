@@ -15,11 +15,6 @@ namespace LanguageLearningTool.Views
             InitializeComponent();
 		}
 
-        public MenuPage(MenuViewModel vm) : this()
-        {
-
-        }
-
         void ListViewMenu_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             ((MenuViewModel)BindingContext).ItemSelectedCommand.Execute(e.SelectedItem);

@@ -26,16 +26,18 @@ namespace LanguageLearningTool.ViewModels
 
         public ReflectingViewLocator()
         {
-            IEnumerable<Type> pageTypes = GetType().Assembly.GetTypes().Where(t => !t.IsAbstract && typeof(Page).IsAssignableFrom(t));
-            foreach (Type pageType in pageTypes) {
-                foreach (ConstructorInfo constructor in pageType.GetConstructors()) {
-                    ParameterInfo[] parameters = constructor.GetParameters();
-                    if (parameters.Length == 1) {
-                        Type parameterType = parameters[0].ParameterType;
-                        if (typeof(ViewModelBase).IsAssignableFrom(parameterType)) {
-                            _map.Add(parameterType, pageType);
-                        }
-                    }
+            IEnumerable<Type> vmTypes = 
+                GetType()
+                    .Assembly
+                    .GetTypes()
+                    .Where(t => t.BaseType != null)
+                    .Where(t => t.BaseType.IsGenericType)
+                    .Where(t => t.BaseType.GetGenericTypeDefinition() == typeof(NavigatableViewModelBase<>));
+
+            foreach (Type vmType in vmTypes) {
+                Type pageType = vmType.BaseType?.GetGenericArguments()[0];
+                if (pageType != null) {
+                    _map.Add(vmType, pageType);
                 }
             }
         }
@@ -43,7 +45,7 @@ namespace LanguageLearningTool.ViewModels
         public Page CreateAndBindPageFor<TViewModel>(TViewModel viewModel) where TViewModel : ViewModelBase
         {
             if (_map.TryGetValue(viewModel.GetType(), out Type pageType)) {
-                object result = Activator.CreateInstance(pageType, BindingFlags.CreateInstance, null, new object[] {viewModel}, null);
+                object result = Activator.CreateInstance(pageType, BindingFlags.CreateInstance, null, null, null);
                 var page = (Page)result;
                 page.BindingContext = viewModel;
                 return page;
