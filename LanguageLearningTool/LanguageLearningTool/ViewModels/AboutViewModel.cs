@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace LanguageLearningTool.ViewModels
 {
-	public class AboutViewModel : BaseViewModel
+	public class AboutViewModel : ViewModelBase
 	{
 		public AboutViewModel()
 		{

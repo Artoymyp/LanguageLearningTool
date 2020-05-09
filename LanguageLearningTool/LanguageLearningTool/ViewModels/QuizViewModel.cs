@@ -16,7 +16,7 @@ namespace LanguageLearningTool.ViewModels
         }
         public string Text { get; set; }
     }
-    public class Question : BaseViewModel
+    public class Question : ViewModelBase
     {
         public Question(string text, IEnumerable<Answer> answers, int correctAnswerIndex)
         {
@@ -32,7 +32,7 @@ namespace LanguageLearningTool.ViewModels
         public int CorrectAnswerIndex { get; private set; }
     }
 
-    public class QuizViewModel : BaseViewModel
+    public class QuizViewModel : ViewModelBase
     {
         readonly INavigationService _navigationService;
         Question _currentQuestion;

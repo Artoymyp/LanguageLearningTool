@@ -10,7 +10,7 @@ using LanguageLearningTool.Services;
 
 namespace LanguageLearningTool.ViewModels
 {
-	public class BaseViewModel : INotifyPropertyChanged
+	public class ViewModelBase : INotifyPropertyChanged
 	{
 		public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LanguageLearningTool.ViewModels
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : ViewModelBase
     {
         MenuViewModel _menu;
         bool _isMenuPresented;
@@ -21,7 +21,7 @@ namespace LanguageLearningTool.ViewModels
             set { _menu = value; }
         }
 
-        public BaseViewModel Detail { get; set; }
+        public ViewModelBase Detail { get; set; }
 
         public bool IsMenuPresented
         {

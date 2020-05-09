@@ -4,7 +4,7 @@ using LanguageLearningTool.Models;
 
 namespace LanguageLearningTool.ViewModels
 {
-	public class ItemDetailViewModel : BaseViewModel
+	public class ItemDetailViewModel : ViewModelBase
 	{
 		public Item Item { get; set; }
 		public ItemDetailViewModel(Item item = null)

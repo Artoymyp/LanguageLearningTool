@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LanguageLearningTool.ViewModels
 {
-    public class QuizResultViewModel : BaseViewModel
+    public class QuizResultViewModel : ViewModelBase
     {
     }
 }

@@ -10,14 +10,14 @@ namespace LanguageLearningTool.ViewModels
 {
     public interface INavigationService
     {
-        Task NavigateTo(BaseViewModel vm);
+        Task NavigateTo(ViewModelBase vm);
 
-        void PresentAsNavigatableMainPage(BaseViewModel viewModel);
+        void PresentAsNavigatableMainPage(ViewModelBase viewModel);
     }
 
     public interface IViewLocator
     {
-        Page CreateAndBindPageFor<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel;
+        Page CreateAndBindPageFor<TViewModel>(TViewModel viewModel) where TViewModel : ViewModelBase;
     }
 
     public class ReflectingViewLocator : IViewLocator
@@ -32,7 +32,7 @@ namespace LanguageLearningTool.ViewModels
                     ParameterInfo[] parameters = constructor.GetParameters();
                     if (parameters.Length == 1) {
                         Type parameterType = parameters[0].ParameterType;
-                        if (typeof(BaseViewModel).IsAssignableFrom(parameterType)) {
+                        if (typeof(ViewModelBase).IsAssignableFrom(parameterType)) {
                             _map.Add(parameterType, pageType);
                         }
                     }
@@ -40,7 +40,7 @@ namespace LanguageLearningTool.ViewModels
             }
         }
 
-        public Page CreateAndBindPageFor<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel
+        public Page CreateAndBindPageFor<TViewModel>(TViewModel viewModel) where TViewModel : ViewModelBase
         {
             if (_map.TryGetValue(viewModel.GetType(), out Type pageType)) {
                 object result = Activator.CreateInstance(pageType, BindingFlags.CreateInstance, null, new object[] {viewModel}, null);
@@ -71,12 +71,12 @@ namespace LanguageLearningTool.ViewModels
             //_menuPages.Add(_presentationRoot.BindingContext.GetType(), _presentationRoot.MainPage);
         }
 
-        Page CreateAndBindPageFor(BaseViewModel vm)
+        Page CreateAndBindPageFor(ViewModelBase vm)
         {
             return _viewLocator.CreateAndBindPageFor(vm);
         }
 
-        public async Task NavigateTo(BaseViewModel vm)
+        public async Task NavigateTo(ViewModelBase vm)
         {
             if (Navigation == null) {
                 return;
@@ -98,7 +98,7 @@ namespace LanguageLearningTool.ViewModels
                 await Task.Delay(100);
         }
 
-        public void PresentAsNavigatableMainPage(BaseViewModel vm)
+        public void PresentAsNavigatableMainPage(ViewModelBase vm)
         {
             Page page = CreateAndBindPageFor(vm);
 

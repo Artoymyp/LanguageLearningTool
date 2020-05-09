@@ -13,7 +13,7 @@ namespace LanguageLearningTool.Models
 	}
 	public class HomeMenuItem
 	{
-		public BaseViewModel ViewModel { get; set; }
+		public ViewModelBase ViewModel { get; set; }
 
 		public string Title { get; set; }
 	}

@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace LanguageLearningTool.ViewModels
 {
-    public class MenuViewModel : BaseViewModel
+    public class MenuViewModel : ViewModelBase
     {
         readonly INavigationService _navigationService;
         readonly MainViewModel _ownerVm;
