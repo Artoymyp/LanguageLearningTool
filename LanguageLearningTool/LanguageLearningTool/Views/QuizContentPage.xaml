@@ -30,14 +30,22 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions> 
-                <Button Grid.Column="0" Text="Previous question" Command="{Binding PrevQuestionCommand}"/>
+                <Button 
+                    Grid.Column="0" 
+                    Text="Previous question" 
+                    Command="{Binding PrevButtonCommand}"
+                    IsEnabled="{Binding PrevButtonIsEnabled}"
+                    />
                 <Label 
                     Grid.Column="1" 
                     VerticalTextAlignment="Center"
                     Text="{Binding Progress}"
                     HorizontalOptions="Center"
                     />
-                <Button Grid.Column="2" Text="Next question" Command="{Binding NextQuestionCommand}"/>
+                <Button 
+                    Grid.Column="2" 
+                    Text="{Binding NextButtonCaption}" 
+                    Command="{Binding NextButtonCommand}"/>
             </Grid>
         </StackLayout>
     </ContentPage.Content>

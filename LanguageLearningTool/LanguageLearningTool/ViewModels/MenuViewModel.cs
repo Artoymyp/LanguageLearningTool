@@ -25,10 +25,11 @@ namespace LanguageLearningTool.ViewModels
                 new HomeMenuItem
                 {
                     ViewModel = new QuizViewModel(new[]
-                    {
-                        new Question("What is 'A'?", new[] {new Answer {Text = "A"}, new Answer {Text = "B"}, new Answer {Text = "C"}, new Answer {Text = "Maybe"}}, 0),
-                        new Question("Is it OK?", new[] {new Answer {Text = "Yes"}, new Answer {Text = "No"}}, 1),
-                    }),
+                        {
+                            new Question("What is 'A'?", new[] {new Answer {Text = "A"}, new Answer {Text = "B"}, new Answer {Text = "C"}, new Answer {Text = "Maybe"}}, 0),
+                            new Question("Is it OK?", new[] {new Answer {Text = "Yes"}, new Answer {Text = "No"}}, 1),
+                        },
+                        _navigationService),
                     Title = "Quiz"
                 },
             };

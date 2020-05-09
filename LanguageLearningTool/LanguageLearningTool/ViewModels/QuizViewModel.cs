@@ -10,6 +10,10 @@ namespace LanguageLearningTool.ViewModels
 {
     public class Answer
     {
+        public Answer(string text = "")
+        {
+            Text = text;
+        }
         public string Text { get; set; }
     }
     public class Question : BaseViewModel
@@ -30,13 +34,16 @@ namespace LanguageLearningTool.ViewModels
 
     public class QuizViewModel : BaseViewModel
     {
+        readonly INavigationService _navigationService;
         Question _currentQuestion;
         string _progress;
+        string _nextButtonCaption;
+        bool _prevButtonIsEnabled;
 
-        public QuizViewModel(IEnumerable<Question> questions)
+        public QuizViewModel(IEnumerable<Question> questions, INavigationService navigationService)
         {
+            _navigationService = navigationService;
             QuestionIndex = -1;
-            CurrentQuestion = null;
             Questions.AddRange(questions);
             MoveToNextQuestion();
         }
@@ -57,37 +64,62 @@ namespace LanguageLearningTool.ViewModels
             set { SetProperty(ref _progress, value); }
         }
 
-        public ICommand PrevQuestionCommand
+        public ICommand PrevButtonCommand
         {
             get { return new Command(MoveToPrevQuestion); }
         }
 
-        public ICommand NextQuestionCommand
+        public ICommand NextButtonCommand
         {
             get { return new Command(MoveToNextQuestion); }
         }
+
+        public string NextButtonCaption
+        {
+            get { return _nextButtonCaption; }
+            set { SetProperty(ref _nextButtonCaption, value); }
+        }
+
+        public bool PrevButtonIsEnabled
+        {
+            get { return _prevButtonIsEnabled; }
+            set { SetProperty(ref _prevButtonIsEnabled, value); }
+        }
+
+        public const string NextQuizQuestionButtonText = "Next question";
+        public const string ShowQuizResultButtonText = "Finish";
 
         void UpdateProgress()
         {
             Progress = string.Format("Question #{0} of {1}", QuestionIndex + 1, Questions.Count);
         }
 
-        public void MoveToNextQuestion()
+        void MoveToNextQuestion()
         {
             if (QuestionIndex < Questions.Count - 1) {
                 QuestionIndex++;
-                CurrentQuestion = Questions[QuestionIndex];
-                UpdateProgress();
+                MoveToQuestion(QuestionIndex);
+            }
+            else {
+                var resultVm = new QuizResultViewModel();
+                _navigationService.NavigateTo(resultVm);
             }
         }
 
-        public void MoveToPrevQuestion()
+        void MoveToPrevQuestion()
         {
             if (QuestionIndex > 0) {
                 QuestionIndex--;
-                CurrentQuestion = Questions[QuestionIndex];
-                UpdateProgress();
+                MoveToQuestion(QuestionIndex);
             }
+        }
+
+        void MoveToQuestion(int questionIndex)
+        {
+            NextButtonCaption = questionIndex < Questions.Count - 1 ? NextQuizQuestionButtonText : ShowQuizResultButtonText;
+            PrevButtonIsEnabled = questionIndex != 0;
+            CurrentQuestion = Questions[QuestionIndex];
+            UpdateProgress();
         }
     }
 }
