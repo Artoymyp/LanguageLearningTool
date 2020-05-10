@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LanguageLearningTool.ViewModels;
@@ -12,7 +13,7 @@ namespace LanguageLearningTool.UnitTests
 	{
         Question CreateQuestion()
         {
-            return new Question("Question1", new []{new Answer("A1"), new Answer("A2")}, 1);
+            return new Question("Question1", new[] {new Answer("A1"), new Answer("A2") {IsCorrect = true}});
         }
 
         List<Question> CreateTwoQuestions()
@@ -142,6 +143,25 @@ namespace LanguageLearningTool.UnitTests
 
             // assert
             navigationServiceMock.Verify(service => service.NavigateTo(It.IsAny<QuizResultViewModel>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void ShowCorrectResult_AfterLastQuestion()
+        {
+            // arrange
+            var questions = new List<Question>
+            {
+                new Question("Question1", new[] {new Answer("A1"), new Answer("A2") {IsCorrect = true}}),
+            };
+            var navigationServiceMock = new Mock<INavigationService>();
+            var quizVm = CreateQuiz(questions, navigationServiceMock.Object);
+
+            // act
+            quizVm.CurrentQuestion.Answers[1].IsSelected = true;
+            quizVm.NextButtonCommand.Execute(null);
+
+            // assert
+            navigationServiceMock.Verify(service => service.NavigateTo(It.Is<QuizResultViewModel>(vm=>Math.Abs(vm.TestRate - 1) < 0.01)), Times.Once);
         }
 
         [DataTestMethod]

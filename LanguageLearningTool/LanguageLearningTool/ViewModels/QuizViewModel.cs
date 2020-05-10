@@ -15,26 +15,62 @@ namespace LanguageLearningTool.ViewModels
             Text = text;
         }
         public string Text { get; set; }
+
+        public bool IsCorrect { get; set; }
+        public bool IsSelected { get; set; }
     }
     public class Question : ViewModelBase
     {
-        public Question(string text, IEnumerable<Answer> answers, int correctAnswerIndex)
+        Answer _selectedItem;
+
+        public Question(string text, IEnumerable<Answer> answers)
         {
             Text = text;
             foreach (Answer answer in answers) {
                 Answers.Add(answer);
             }
-            CorrectAnswerIndex = correctAnswerIndex;
         }
         public string Text { get; set; }
         public IList<Answer> Answers { get; private set; } = new List<Answer>();
-        public int SelectedAnswerIndex { get; set; }
-        public int CorrectAnswerIndex { get; private set; }
+        public bool IsCorrect()
+        {
+            foreach (Answer answer in Answers) {
+                if (answer.IsCorrect != answer.IsSelected) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public Answer SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                if (_selectedItem != null && value == null) {
+                    // ListView.SelectedItem's binding is overriding ViewModel's property on initialization with null.
+                    // Because of that the initial selection is lost. This is a simplest solution to preserve the original value of ViewModel's property.
+                    OnPropertyChanged();
+                    return;
+                }
+                if (_selectedItem != value) {
+                    var oldSelectedItem = _selectedItem;
+                    if (SetProperty(ref _selectedItem, value)) {
+                        if (oldSelectedItem != null) {
+                            oldSelectedItem.IsSelected = false;
+                        }
+
+
+                        if (_selectedItem != null) {
+                            _selectedItem.IsSelected = true;
+                        }
+                    }
+                }
+            }
+        }
     }
-    public class QuizViewModel1 : QuizViewModel
-    {
-        QuizViewModel1():base(null, null) { }
-    }
+
     public class QuizViewModel : NavigatableViewModelBase<Views.QuizContentPage>
     {
         readonly INavigationService _navigationService;
@@ -104,7 +140,10 @@ namespace LanguageLearningTool.ViewModels
                 MoveToQuestion(QuestionIndex);
             }
             else {
-                var resultVm = new QuizResultViewModel();
+                var resultVm = new QuizResultViewModel
+                {
+                    TestRate = Questions.Average(q=>q.IsCorrect() ? 1.0 : 0.0)
+                };
                 _navigationService.NavigateTo(resultVm);
             }
         }

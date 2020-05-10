@@ -10,7 +10,9 @@
                 HorizontalOptions="CenterAndExpand" />
             <Label Text ="{Binding CurrentQuestion.Text}"/>
             <ListView
-                ItemsSource="{Binding CurrentQuestion.Answers}">
+                ItemsSource="{Binding CurrentQuestion.Answers}"
+                SelectedItem="{Binding CurrentQuestion.SelectedItem, Mode=TwoWay}"
+                >
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="viewModels:Answer">
                         <ViewCell>
