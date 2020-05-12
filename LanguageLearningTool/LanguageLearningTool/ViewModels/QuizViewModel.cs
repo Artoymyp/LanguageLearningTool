@@ -8,16 +8,77 @@ using Xamarin.Forms;
 
 namespace LanguageLearningTool.ViewModels
 {
-    public class Answer
+    public class Answer : ViewModelBase
     {
+        Color _backgroundColor;
+        bool _isSelected;
+        bool _isCorrect;
+        bool _isEnabled = true;
+
         public Answer(string text = "")
         {
             Text = text;
         }
         public string Text { get; set; }
 
-        public bool IsCorrect { get; set; }
-        public bool IsSelected { get; set; }
+        public bool IsCorrect
+        {
+            get { return _isCorrect; }
+            set
+            {
+                _isCorrect = value;
+                UpdateBackgroundColor();
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                UpdateBackgroundColor();
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set
+            {
+                _isEnabled = value;
+                UpdateBackgroundColor();
+            }
+        }
+
+        public Xamarin.Forms.Color BackgroundColor
+        {
+            get { return _backgroundColor; }
+            set { SetProperty(ref _backgroundColor, value); }
+        }
+
+        Xamarin.Forms.Color EvaluateBackgroundColor()
+        {
+            if (IsEnabled) {
+                if (IsSelected) {
+                    return Color.BurlyWood;
+                }
+            }
+            else {
+                if (IsCorrect) {
+                    return Color.Green;
+                }
+                if (IsSelected) {
+                    return Color.DarkRed;
+                }
+            }
+            return Color.Transparent;
+        }
+
+        public void UpdateBackgroundColor()
+        {
+            BackgroundColor = EvaluateBackgroundColor();
+        }
     }
     public class Question : ViewModelBase
     {
@@ -78,6 +139,7 @@ namespace LanguageLearningTool.ViewModels
         string _progress;
         string _nextButtonCaption;
         bool _prevButtonIsEnabled;
+        bool _canSelectAnswers = true;
 
         public QuizViewModel(IEnumerable<Question> questions, INavigationService navigationService)
         {
@@ -125,6 +187,21 @@ namespace LanguageLearningTool.ViewModels
             set { SetProperty(ref _prevButtonIsEnabled, value); }
         }
 
+        public bool CanSelectAnswers
+        {
+            get { return _canSelectAnswers; }
+            set
+            {
+                if (SetProperty(ref _canSelectAnswers, value)) {
+                    foreach (Question question in Questions) {
+                        foreach (Answer answer in question.Answers) {
+                            answer.IsEnabled = value;
+                        }
+                    }
+                }
+            }
+        }
+
         public const string NextQuizQuestionButtonText = "Next question";
         public const string ShowQuizResultButtonText = "Finish";
 
@@ -145,6 +222,7 @@ namespace LanguageLearningTool.ViewModels
                     TestRate = Questions.Average(q=>q.IsCorrect() ? 1.0 : 0.0)
                 };
                 _navigationService.NavigateTo(resultVm);
+                CanSelectAnswers = false;
             }
         }
 

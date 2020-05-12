@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using LanguageLearningTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -10,7 +12,7 @@ namespace LanguageLearningTool.UnitTests
 	
 	[TestClass]
 	public class QuizViewModelTests
-	{
+    {
         Question CreateQuestion()
         {
             return new Question("Question1", new[] {new Answer("A1"), new Answer("A2") {IsCorrect = true}});
@@ -180,6 +182,86 @@ namespace LanguageLearningTool.UnitTests
 
             // assert
             Assert.AreEqual(expectedIsEnabled, quizVm.PrevButtonIsEnabled);
+        }
+
+        [TestMethod]
+        public void CanSelectAnswers_Initially()
+        {
+            // arrange
+            var questions = CreateQuestion();
+
+            // act
+            var quizVm = CreateQuiz(new[] {questions}, new Mock<INavigationService>().Object);
+
+            // assert
+            Assert.IsTrue(quizVm.CanSelectAnswers);
+        }
+
+        [TestMethod]
+        public void CannotSelectAnswers_AfterResultsShown()
+        {
+            // arrange
+            var questions = CreateQuestion();
+            var quizVm = CreateQuiz(new[] { questions }, new Mock<INavigationService>().Object);
+
+            // act
+            quizVm.NextButtonCommand.Execute(null);
+
+            // assert
+            Assert.IsFalse(quizVm.CanSelectAnswers);
+        }
+
+        public static class MemberInfoGetting
+        {
+            public static string GetMemberName<T>(Expression<Func<T>> memberExpression)
+            {
+                MemberExpression expressionBody = (MemberExpression)memberExpression.Body;
+                return expressionBody.Member.Name;
+            }
+        }
+
+        Xamarin.Forms.Color GetColor(string name)
+        {
+            var memberInfos = typeof(Xamarin.Forms.Color).GetField(name);
+            return (Xamarin.Forms.Color)memberInfos.GetValue(null);
+        }
+
+        [DataTestMethod]
+        [DataRow("Transparent", false, false, false)]
+        [DataRow("Transparent", false, false, true)]
+        [DataRow("BurlyWood", false, true, false)]
+        [DataRow("BurlyWood", false, true, true)]
+        [DataRow("Transparent", true, false, false)]
+        [DataRow("Green", true, false, true)]
+        [DataRow("DarkRed", true, true, false)]
+        [DataRow("Green", true, true, true)]
+        public void AnswerIsGreen_WhenIsCorrectAndIsSelectedAndQuizIsFinished(
+            string expectedColorString,
+            bool quizIsComplete,
+            bool isSelected,
+            bool isCorrect
+            )
+        {
+            // arrange
+            var answer = new Answer("A2");
+            var questions = new[] {new Question("Question1", new[] {answer})};
+            var quizVm = CreateQuiz(questions, new Mock<INavigationService>().Object);
+            Xamarin.Forms.Color expectedColor = GetColor(expectedColorString);
+
+            // act
+            answer.IsCorrect = isCorrect;
+
+            if (isSelected) {
+                quizVm.CurrentQuestion.SelectedItem = answer;
+            }
+
+            quizVm.CanSelectAnswers = !quizIsComplete;
+
+            // assert
+            Assert.AreEqual(
+                expectedColor,
+                answer.BackgroundColor,
+                string.Format("QuizIsComplete:{0}, AnswerIsSelected:{1}, AnswerIsCorrect:{2}", quizIsComplete, isSelected, isCorrect));
         }
     }
 }
