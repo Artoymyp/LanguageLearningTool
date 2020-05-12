@@ -8,6 +8,11 @@ namespace LanguageLearningTool.ViewModels
     {
         double _testRate;
 
+        public QuizResultViewModel()
+        {
+            Title = "Quiz results";
+        }
+
         public double TestRate
         {
             get { return _testRate; }

@@ -143,6 +143,7 @@ namespace LanguageLearningTool.ViewModels
 
         public QuizViewModel(IEnumerable<Question> questions, INavigationService navigationService)
         {
+            Title = "Grammar quiz";
             _navigationService = navigationService;
             QuestionIndex = -1;
             Questions.AddRange(questions);
