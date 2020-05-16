@@ -8,11 +8,11 @@ namespace LanguageLearningTool.ViewModels
 {
 	public class AboutViewModel : NavigatableViewModelBase<Views.AboutPage>
     {
-		public AboutViewModel()
+        public AboutViewModel()
 		{
 			Title = "About";
 
-			OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://xamarin.com/platform")));
+			OpenWebCommand = new Command(() => Xamarin.Essentials.Launcher.OpenAsync(new Uri("https://xamarin.com/platform")));
 			PlayTestCommand = new Command(()=>
 			{
 				var assembly = typeof(App).GetTypeInfo().Assembly;
@@ -27,5 +27,5 @@ namespace LanguageLearningTool.ViewModels
 
 		public ICommand OpenWebCommand { get; }
 		public ICommand PlayTestCommand { get; }
-	}
+    }
 }

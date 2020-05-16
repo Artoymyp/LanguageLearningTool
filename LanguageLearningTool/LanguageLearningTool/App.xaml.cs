@@ -4,6 +4,9 @@ using Xamarin.Forms.Xaml;
 using LanguageLearningTool.Services;
 using LanguageLearningTool.ViewModels;
 using LanguageLearningTool.Views;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace LanguageLearningTool
@@ -39,8 +42,13 @@ namespace LanguageLearningTool
 
 		protected override void OnStart()
 		{
-			// Handle when your app starts
-		}
+            // Handle when your app starts
+            const string appSecret = "ios=01cc33e2-1153-47f1-b372-57769388548f;" +
+                                     "android=f25b5768-482f-413e-a1d5-1f36c5a157bd;" +
+                                     "uwp=35055e63-2a8b-46f7-b4c3-5d0456408e81";
+            AppCenter.Start(appSecret, typeof(Analytics), typeof(Crashes));
+            Analytics.TrackEvent("App started");
+        }
 
 		protected override void OnSleep()
 		{

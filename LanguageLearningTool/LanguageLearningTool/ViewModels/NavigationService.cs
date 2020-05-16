@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using LanguageLearningTool.Views;
+using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
 
 namespace LanguageLearningTool.ViewModels
@@ -82,6 +83,10 @@ namespace LanguageLearningTool.ViewModels
         {
             if (Navigation == null) {
                 return;
+            }
+            
+            if (vm != null) {
+                Analytics.TrackEvent("Going to " + vm.GetType().Name);
             }
 
 

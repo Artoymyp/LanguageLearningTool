@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageLearningTool.Mobile
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageLearningTool", "LanguageLearningTool\LanguageLearningTool\LanguageLearningTool.csproj", "{B025EE4B-0360-45F5-9966-11F7A1207BE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageLearningTool.UnitTests", "LanguageLearningTool.UnitTests\LanguageLearningTool.UnitTests.csproj", "{E19EB20E-53E3-44A7-BEB8-AFB84760CFDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageLearningTool.UnitTests", "LanguageLearningTool.UnitTests\LanguageLearningTool.UnitTests.csproj", "{E19EB20E-53E3-44A7-BEB8-AFB84760CFDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
