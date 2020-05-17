@@ -8,7 +8,7 @@
 
   <Identity
     Name="3f08fc0f-d78a-4315-95af-64f89fe00ecd"
-    Publisher="CN=66374304-4a12-4302-a2d0-ca52276241ab"
+    Publisher="CN=Artem Piatkov"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="ec0cc741-fd3e-485c-81be-68815c480690" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>

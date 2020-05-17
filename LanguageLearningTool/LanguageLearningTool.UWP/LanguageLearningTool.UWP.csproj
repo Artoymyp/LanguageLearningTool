@@ -19,6 +19,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>LanguageLearningTool.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>B87DF09736209021E3EFFEB2624DCE314CB57555</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -158,6 +159,9 @@
       <Project>{01CEAC55-2B08-463E-B95C-FBEB72D1FA22}</Project>
       <Name>LanguageLearningTool</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LanguageLearningTool.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
