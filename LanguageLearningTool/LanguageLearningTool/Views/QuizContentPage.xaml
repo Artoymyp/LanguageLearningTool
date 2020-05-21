@@ -15,7 +15,7 @@
                 IsEnabled="{Binding CanSelectAnswers}"
                 >
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="viewModels:Answer">
+                    <DataTemplate x:DataType="viewModels:AnswerViewModel">
                         <ViewCell>
                             <StackLayout 
                                 Orientation="Horizontal"

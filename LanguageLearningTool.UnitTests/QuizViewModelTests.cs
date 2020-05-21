@@ -13,23 +13,23 @@ namespace LanguageLearningTool.UnitTests
 	[TestClass]
 	public class QuizViewModelTests
     {
-        Question CreateQuestion()
+        QuestionViewModel CreateQuestion()
         {
-            return new Question("Question1", new[] {new Answer("A1"), new Answer("A2") {IsCorrect = true}});
+            return new QuestionViewModel("Question1", new[] {new AnswerViewModel("A1"), new AnswerViewModel("A2") {IsCorrect = true}});
         }
 
-        List<Question> CreateTwoQuestions()
+        List<QuestionViewModel> CreateTwoQuestions()
         {
-            return new List<Question>
+            return new List<QuestionViewModel>
             {
                 CreateQuestion(),
                 CreateQuestion(),
             };
         }
 
-        List<Question> CreateThreeQuestions()
+        List<QuestionViewModel> CreateThreeQuestions()
         {
-            return new List<Question>
+            return new List<QuestionViewModel>
             {
                 CreateQuestion(),
                 CreateQuestion(),
@@ -37,7 +37,7 @@ namespace LanguageLearningTool.UnitTests
             };
         }
 
-        QuizViewModel CreateQuiz(IEnumerable<Question> questions, INavigationService navigationService = null)
+        QuizViewModel CreateQuiz(IEnumerable<QuestionViewModel> questions, INavigationService navigationService = null)
         {
             return new QuizViewModel(questions, navigationService);
         }
@@ -151,9 +151,9 @@ namespace LanguageLearningTool.UnitTests
         public void ShowCorrectResult_AfterLastQuestion()
         {
             // arrange
-            var questions = new List<Question>
+            var questions = new List<QuestionViewModel>
             {
-                new Question("Question1", new[] {new Answer("A1"), new Answer("A2") {IsCorrect = true}}),
+                new QuestionViewModel("Question1", new[] {new AnswerViewModel("A1"), new AnswerViewModel("A2") {IsCorrect = true}}),
             };
             var navigationServiceMock = new Mock<INavigationService>();
             var quizVm = CreateQuiz(questions, navigationServiceMock.Object);
@@ -243,8 +243,8 @@ namespace LanguageLearningTool.UnitTests
             )
         {
             // arrange
-            var answer = new Answer("A2");
-            var questions = new[] {new Question("Question1", new[] {answer})};
+            var answer = new AnswerViewModel("A2");
+            var questions = new[] {new QuestionViewModel("Question1", new[] {answer})};
             var quizVm = CreateQuiz(questions, new Mock<INavigationService>().Object);
             Xamarin.Forms.Color expectedColor = GetColor(expectedColorString);
 

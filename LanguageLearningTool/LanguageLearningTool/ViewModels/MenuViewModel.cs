@@ -26,8 +26,8 @@ namespace LanguageLearningTool.ViewModels
                 {
                     ViewModel = new QuizViewModel(new[]
                         {
-                            new Question("What is 'A'?", new[] {new Answer {Text = "A", IsCorrect = true}, new Answer {Text = "B"}, new Answer {Text = "C"}, new Answer {Text = "Maybe"}}),
-                            new Question("Is it OK?", new[] {new Answer {Text = "Yes"}, new Answer {Text = "No", IsCorrect = true}}),
+                            new QuestionViewModel("What is 'A'?", new[] {new AnswerViewModel {Text = "A", IsCorrect = true}, new AnswerViewModel {Text = "B"}, new AnswerViewModel {Text = "C"}, new AnswerViewModel {Text = "Maybe"}}),
+                            new QuestionViewModel("Is it OK?", new[] {new AnswerViewModel {Text = "Yes"}, new AnswerViewModel {Text = "No", IsCorrect = true}}),
                         },
                         _navigationService),
                     Title = "Quiz"
