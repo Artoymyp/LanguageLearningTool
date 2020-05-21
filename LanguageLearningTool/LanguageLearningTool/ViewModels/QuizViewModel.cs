@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using LanguageLearningTool.Models;
 using Xamarin.Forms;
 
 namespace LanguageLearningTool.ViewModels
@@ -14,6 +15,12 @@ namespace LanguageLearningTool.ViewModels
         bool _isSelected;
         bool _isCorrect;
         bool _isEnabled = true;
+
+        public AnswerViewModel(Answer answer)
+        {
+            Text = answer.Text;
+            IsCorrect = answer.IsCorrect;
+        }
 
         public AnswerViewModel(string text = "")
         {
@@ -84,6 +91,10 @@ namespace LanguageLearningTool.ViewModels
     {
         AnswerViewModel _selectedItem;
 
+        public QuestionViewModel(Question question) : 
+            this(question.Text, question.Answers.ConvertAll(a=>new AnswerViewModel(a)))
+        { }
+
         public QuestionViewModel(string text, IEnumerable<AnswerViewModel> answers)
         {
             Text = text;
@@ -141,12 +152,23 @@ namespace LanguageLearningTool.ViewModels
         bool _prevButtonIsEnabled;
         bool _canSelectAnswers = true;
 
+        public QuizViewModel(GrammarQuizRoot quizRoot, INavigationService navigationService) :
+            this(quizRoot?.
+                    Themes.
+                    SelectMany(t=>t.QuestionGroups).
+                    SelectMany(g=>g.Questions).
+                    Select(q=>new QuestionViewModel(q)), 
+                 navigationService)
+        { }
+
         public QuizViewModel(IEnumerable<QuestionViewModel> questions, INavigationService navigationService)
         {
             Title = "Grammar quiz";
             _navigationService = navigationService;
             QuestionIndex = -1;
-            Questions.AddRange(questions);
+            if (questions != null) {
+                Questions.AddRange(questions);
+            }
             MoveToNextQuestion();
         }
 

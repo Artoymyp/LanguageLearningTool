@@ -18,18 +18,14 @@ namespace LanguageLearningTool.ViewModels
         {
             _navigationService = navigationService;
             _ownerVm = ownerVm;
+            var quizRoot = new QuizDataReader().GetQuizData();
             _menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {ViewModel = new ItemsViewModel(navigationService), Title = "Browse"},
                 new HomeMenuItem {ViewModel = new AboutViewModel(), Title = "About"},
                 new HomeMenuItem
                 {
-                    ViewModel = new QuizViewModel(new[]
-                        {
-                            new QuestionViewModel("What is 'A'?", new[] {new AnswerViewModel {Text = "A", IsCorrect = true}, new AnswerViewModel {Text = "B"}, new AnswerViewModel {Text = "C"}, new AnswerViewModel {Text = "Maybe"}}),
-                            new QuestionViewModel("Is it OK?", new[] {new AnswerViewModel {Text = "Yes"}, new AnswerViewModel {Text = "No", IsCorrect = true}}),
-                        },
-                        _navigationService),
+                    ViewModel = new QuizViewModel(quizRoot, _navigationService),
                     Title = "Quiz"
                 },
             };
