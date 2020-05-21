@@ -4,18 +4,25 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using LanguageLearningTool.Models;
 using Xamarin.Forms;
 
 namespace LanguageLearningTool.ViewModels
 {
-    public class Answer : ViewModelBase
+    public class AnswerViewModel : ViewModelBase
     {
         Color _backgroundColor;
         bool _isSelected;
         bool _isCorrect;
         bool _isEnabled = true;
 
-        public Answer(string text = "")
+        public AnswerViewModel(Answer answer)
+        {
+            Text = answer.Text;
+            IsCorrect = answer.IsCorrect;
+        }
+
+        public AnswerViewModel(string text = "")
         {
             Text = text;
         }
@@ -80,22 +87,26 @@ namespace LanguageLearningTool.ViewModels
             BackgroundColor = EvaluateBackgroundColor();
         }
     }
-    public class Question : ViewModelBase
+    public class QuestionViewModel : ViewModelBase
     {
-        Answer _selectedItem;
+        AnswerViewModel _selectedItem;
 
-        public Question(string text, IEnumerable<Answer> answers)
+        public QuestionViewModel(Question question) : 
+            this(question.Text, question.Answers.ConvertAll(a=>new AnswerViewModel(a)))
+        { }
+
+        public QuestionViewModel(string text, IEnumerable<AnswerViewModel> answers)
         {
             Text = text;
-            foreach (Answer answer in answers) {
+            foreach (AnswerViewModel answer in answers) {
                 Answers.Add(answer);
             }
         }
         public string Text { get; set; }
-        public IList<Answer> Answers { get; private set; } = new List<Answer>();
+        public IList<AnswerViewModel> Answers { get; private set; } = new List<AnswerViewModel>();
         public bool IsCorrect()
         {
-            foreach (Answer answer in Answers) {
+            foreach (AnswerViewModel answer in Answers) {
                 if (answer.IsCorrect != answer.IsSelected) {
                     return false;
                 }
@@ -104,7 +115,7 @@ namespace LanguageLearningTool.ViewModels
             return true;
         }
 
-        public Answer SelectedItem
+        public AnswerViewModel SelectedItem
         {
             get { return _selectedItem; }
             set
@@ -135,28 +146,39 @@ namespace LanguageLearningTool.ViewModels
     public class QuizViewModel : NavigatableViewModelBase<Views.QuizContentPage>
     {
         readonly INavigationService _navigationService;
-        Question _currentQuestion;
+        QuestionViewModel _currentQuestion;
         string _progress;
         string _nextButtonCaption;
         bool _prevButtonIsEnabled;
         bool _canSelectAnswers = true;
 
-        public QuizViewModel(IEnumerable<Question> questions, INavigationService navigationService)
+        public QuizViewModel(GrammarQuizRoot quizRoot, INavigationService navigationService) :
+            this(quizRoot?.
+                    Themes.
+                    SelectMany(t=>t.QuestionGroups).
+                    SelectMany(g=>g.Questions).
+                    Select(q=>new QuestionViewModel(q)), 
+                 navigationService)
+        { }
+
+        public QuizViewModel(IEnumerable<QuestionViewModel> questions, INavigationService navigationService)
         {
             Title = "Grammar quiz";
             _navigationService = navigationService;
             QuestionIndex = -1;
-            Questions.AddRange(questions);
+            if (questions != null) {
+                Questions.AddRange(questions);
+            }
             MoveToNextQuestion();
         }
 
-        public Question CurrentQuestion
+        public QuestionViewModel CurrentQuestion
         {
             get { return _currentQuestion; }
             set { SetProperty(ref _currentQuestion, value); }
         }
 
-        List<Question> Questions { get; } = new List<Question>();
+        List<QuestionViewModel> Questions { get; } = new List<QuestionViewModel>();
 
         public int QuestionIndex { get; set; }
 
@@ -194,8 +216,8 @@ namespace LanguageLearningTool.ViewModels
             set
             {
                 if (SetProperty(ref _canSelectAnswers, value)) {
-                    foreach (Question question in Questions) {
-                        foreach (Answer answer in question.Answers) {
+                    foreach (QuestionViewModel question in Questions) {
+                        foreach (AnswerViewModel answer in question.Answers) {
                             answer.IsEnabled = value;
                         }
                     }
