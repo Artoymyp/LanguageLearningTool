@@ -21,7 +21,7 @@ namespace LanguageLearningTool.ViewModels
             var quizRoot = new QuizDataReader().GetQuizData();
             _menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {ViewModel = new ItemsViewModel(navigationService), Title = "Browse"},
+                new HomeMenuItem {ViewModel = new ItemsViewModel(navigationService), Title = LanguageLearningTool.App.UserName},
                 new HomeMenuItem {ViewModel = new AboutViewModel(), Title = "About"},
                 new HomeMenuItem
                 {
