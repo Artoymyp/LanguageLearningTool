@@ -8,9 +8,13 @@ namespace LanguageLearningTool.Models
 {
     public class User
     {
+        public User()
+        {
+            NextNewQuestionId = 1;
+        }
         public int Id { get; set; }
         public string Email { get; set; }
-        public int NextNewQuestion { get; set; }
+        public int NextNewQuestionId { get; set; }
     }
 
     public class QuestionInfo
@@ -87,7 +91,13 @@ namespace LanguageLearningTool.Models
 
         public QuestionInfo StartLearningNewQuestion()
         {
-            throw new NotImplementedException();
+            var user = _context.Users.First();
+            var nextNewQuestionId = user.NextNewQuestionId;
+            var nextNewQuestion = _context.Questions.FirstOrDefault(q => q.Id == nextNewQuestionId);
+            if (nextNewQuestion != null) {
+                user.NextNewQuestionId = nextNewQuestionId + 1;
+            }
+            return nextNewQuestion;
         }
     }
 }
